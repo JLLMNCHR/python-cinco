@@ -28,6 +28,7 @@ def job():
 def main():
     print('Ejecutando main()')
     while True:
+        job()
         time.sleep(900) #900sg = 15min        
 
 if __name__ == '__main__':
