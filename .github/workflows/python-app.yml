@@ -18,5 +18,5 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Ejecutar script de Python
-      run: python ./github/croner.py
+      run: python ./croner.py
         
