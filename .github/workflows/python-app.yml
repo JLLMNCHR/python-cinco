@@ -1,7 +1,5 @@
-# This workflow will install Python dependencies, run tests and lint with a single version of Python
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
 
-name: Python application
+name: Croner Python
 
 on:
   workflow_dispatch:
@@ -12,5 +10,5 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Ejecutar script de Python
-      run: python ./croner.py
+      run: python ../../croner.py
         
