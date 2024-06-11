@@ -28,13 +28,13 @@ def job():
 #schedule.every().day.at("08:00").do(job)
 schedule.every(15).minutes.do(job)
 
-
-while True:
-    schedule.run_pending()
-    time.sleep(1)
-
 def main():
     print('Ejecutando main()')
 
 if __name__ == '__main__':
     main()
+
+while True:
+    schedule.run_pending()
+    time.sleep(1)
+
