@@ -32,3 +32,9 @@ schedule.every(15).minutes.do(job)
 while True:
     schedule.run_pending()
     time.sleep(1)
+
+def main():
+    print('Ejecutando main()')
+
+if __name__ == '__main__':
+    main()
