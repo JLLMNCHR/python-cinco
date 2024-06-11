@@ -16,5 +16,5 @@ jobs:
         pip install schedule
 
     - name: Ejecutar script de Python
-      run: python croner.py
+      run: python croner-dos.py
         
