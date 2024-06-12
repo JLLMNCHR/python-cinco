@@ -8,7 +8,7 @@ from gestor_email import send_email
 
 def job():
     print("Ejecutando main.job()")
-    
+
     get_info()
 
     salidas_dir = './salidas'
@@ -17,7 +17,7 @@ def job():
     send_email(attachment_paths)
 
 #schedule.every().day.at("08:00").do(job)
-schedule.every(1).minutes.do(job)
+schedule.every(2).minutes.do(job)
 
 while True:
     schedule.run_pending()
