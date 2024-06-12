@@ -1,5 +1,9 @@
 import smtplib
 from email.mime.multipart import MIMEMultipart
+from email.mime.base import MIMEBase
+from email.mime.text import MIMEText
+from email import encoders
+
 
 def send_email():
     from_email = 'jllmnchr@gmail.com'
@@ -11,6 +15,7 @@ def send_email():
     msg['From'] = from_email
     msg['To'] = to_email
     msg['Subject'] = subject
+    msg.attach(MIMEText(body, 'plain'))
 
     server = smtplib.SMTP('smtp.gmail.com', 587)
     server.starttls()
