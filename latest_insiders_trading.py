@@ -12,23 +12,24 @@ def get_info():
 
     try:
         res = requests.get(url, headers=headers)
-        print("res: ", res)
+        print("res:", res)
         res.raise_for_status()
     except Exception as e:
         print(f"Error: {e}")
     else:
-        soup = BeautifulSoup(res.text, 'html.parser')
-        table = soup.find('table', {'class': 'styled-table-new is-rounded is-condensed mt-2 w-full'})
+        soup = BeautifulSoup(res.text, 'html.parser')        
+        table = soup.find('table', {'class': 'styled-table-new is-rounded is-condensed mt-2 w-full'})        
 
         if table:
             # Crear directorios de salida si no existen
             os.makedirs('./salidas', exist_ok=True)
 
             # Obtener las filas de la tabla
-            rows = table.find_all('tr')
+            rows = table.find_all('tr')            
 
             # Escribir los encabezados de columna
             headers = [th.text.strip() for th in rows[0].find_all('th')]
+            print("headers:", headers)
 
             # Crear libros de trabajo de Excel para 'Buy' y 'Sale'
             workbook_buy = openpyxl.Workbook()
