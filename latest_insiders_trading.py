@@ -61,14 +61,14 @@ def get_info():
                         col = col.replace(',', '')
                         cols[i] = float(col)
 
-                    # Escribir la fila en el archivo Excel correspondiente
-                    if 'Transaction' in headers:
-                        transaction_index = headers.index('Transaction')
-                        if transaction_index < len(cols):
-                            if cols[transaction_index] == 'Buy':
-                                worksheet_buy.append(cols)
-                            elif cols[transaction_index] == 'Sale':
-                                worksheet_sale.append(cols)
+                # Escribir la fila en el archivo Excel correspondiente
+                if 'Transaction' in headers:
+                    transaction_index = headers.index('Transaction')
+                    if transaction_index < len(cols):
+                        if cols[transaction_index] == 'Buy':
+                            worksheet_buy.append(cols)
+                        elif cols[transaction_index] == 'Sale':
+                            worksheet_sale.append(cols)
 
             # Guardar los libros de trabajo en archivos
             workbook_buy.save('./salidas/latest-insiders-trading-Buy.xlsx')
