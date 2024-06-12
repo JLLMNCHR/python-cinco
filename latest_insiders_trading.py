@@ -12,6 +12,7 @@ def get_info():
 
     try:
         res = requests.get(url, headers=headers)
+        print("res: ", res)
         res.raise_for_status()
     except Exception as e:
         print(f"Error: {e}")
