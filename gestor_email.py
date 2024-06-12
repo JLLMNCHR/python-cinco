@@ -30,7 +30,24 @@ def send_email(attachment_paths):
 
     server = smtplib.SMTP('smtp.gmail.com', 587)
     server.starttls()
-    server.login(from_email, 'kwjn kcsg bzlr xcpt')
+
+    gmail_app_key = os.getenv("GMAIL_APP_KEY")
+    if gmail_app_key is None:
+        print("Error: La variable de entorno GMAIL_APP_KEY no está configurada.")
+        return
+    else:
+        server.login(from_email, gmail_app_key)
+        #server.login(from_email, 'kwjn kcsg bzlr xcpt')
+
     text = msg.as_string()
     server.sendmail(from_email, to_email, text)
     server.quit()
+
+def main():
+    salidas_dir = './salidas'
+    attachment_paths = [os.path.join(salidas_dir, filename) for filename in os.listdir(salidas_dir)]
+
+    send_email(attachment_paths)
+
+if __name__ == '__main__':
+    main()
