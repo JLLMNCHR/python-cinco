@@ -8,7 +8,7 @@ def job():
     send_email()
 
 #schedule.every().day.at("08:00").do(job)
-schedule.every(5).minutes.do(job)
+schedule.every(1).minutes.do(job)
 
 while True:
     schedule.run_pending()
