@@ -67,3 +67,10 @@ def get_info():
             print("Datos guardados en ./salidas/latest-insiders-trading-Buy.xlsx y ./salidas/latest-insiders-trading-Sale.xlsx")
         else:
             print("No se encontró la tabla en la página.")
+
+
+def main():
+    get_info()
+
+if __name__ == '__main__':
+    main()
