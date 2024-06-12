@@ -44,9 +44,11 @@ def get_info():
             for row in rows[1:]:
                 cols = [col.text.strip() for col in row.find_all('td')]
 
-                # Verificar si la columna 'Transaction' es 'Option Exercise'
-                if 'Transaction' in headers and cols[headers.index('Transaction')] == 'Option Exercise':
-                    continue  # Omitir esta fila
+                # Verificar si la columna 'Transaction' está presente
+                if 'Transaction' in headers:
+                    transaction_index = headers.index('Transaction')
+                    if cols[transaction_index] == 'Option Exercise':
+                        continue  # Omitir esta fila
 
                 # Formatear las columnas numéricas
                 for i, col in enumerate(cols):
@@ -57,11 +59,13 @@ def get_info():
                         col = col.replace(',', '')
                         cols[i] = float(col)
 
-                # Escribir la fila en el archivo Excel correspondiente
-                if 'Transaction' in headers and cols[headers.index('Transaction')] == 'Buy':
-                    worksheet_buy.append(cols)
-                elif 'Transaction' in headers and cols[headers.index('Transaction')] == 'Sale':
-                    worksheet_sale.append(cols)
+                    # Escribir la fila en el archivo Excel correspondiente
+                    if 'Transaction' in headers:
+                        transaction_index = headers.index('Transaction')
+                        if cols[transaction_index] == 'Buy':
+                            worksheet_buy.append(cols)
+                        elif cols[transaction_index] == 'Sale':
+                            worksheet_sale.append(cols)
 
             # Guardar los libros de trabajo en archivos
             workbook_buy.save('./salidas/latest-insiders-trading-Buy.xlsx')
