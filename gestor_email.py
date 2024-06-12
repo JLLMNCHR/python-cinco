@@ -37,7 +37,6 @@ def send_email(attachment_paths):
         return
     else:
         server.login(from_email, gmail_app_key)
-        #server.login(from_email, 'kwjn kcsg bzlr xcpt')
 
     text = msg.as_string()
     server.sendmail(from_email, to_email, text)
