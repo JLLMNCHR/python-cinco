@@ -18,7 +18,7 @@ def get_info():
         print(f"Error: {e}")
     else:
         soup = BeautifulSoup(res.text, 'html.parser')        
-        table = soup.find('table', {'class': 'styled-table-new is-rounded is-condensed mt-2 w-full'})        
+        table = soup.find('table', {'class': 'styled-table-new is-rounded is-condensed mt-2 w-full'})              
 
         if table:
             # Crear directorios de salida si no existen
@@ -27,53 +27,75 @@ def get_info():
             # Obtener las filas de la tabla
             rows = table.find_all('tr')            
 
-            # Escribir los encabezados de columna
-            headers = [th.text.strip() for th in rows[0].find_all('th')]
-            print("headers:", headers)
+            continuar_tratamiento = True
 
-            # Crear libros de trabajo de Excel para 'Buy' y 'Sale'
-            workbook_buy = openpyxl.Workbook()
-            worksheet_buy = workbook_buy.active
-            worksheet_buy.append(headers)
+            try:
+                with open('latest-insiders-transaction-rows.html', 'r', encoding='utf-8') as f:
+                    contenido_previo = f.read()
+            except FileNotFoundError:
+                pass
+            else:
+                contenido_actual = str(rows)
+                if contenido_previo == contenido_actual:
+                    continuar_tratamiento = False
+                else:
+                    with open('latest-insiders-transaction-rows.html', 'w', encoding='utf-8') as f:
+                        f.write(contenido_actual)
 
-            workbook_sale = openpyxl.Workbook()
-            worksheet_sale = workbook_sale.active
-            worksheet_sale.append(headers)
+            if continuar_tratamiento:
+                # Continuar con el tratamiento de los datos
 
-            # Escribir los datos de las filas
-            for row in rows[1:]:
-                cols = [col.text.strip() for col in row.find_all('td')]
+                # Escribir los encabezados de columna
+                headers = [th.text.strip() for th in rows[0].find_all('th')]
+                print("headers:", headers)
 
-                # Verificar si la columna 'Transaction' está presente
-                if 'Transaction' in headers:
-                    transaction_index = headers.index('Transaction')
-                    # Verificar si el índice está dentro de los límites de la lista cols
-                    if transaction_index < len(cols):
-                        if cols[transaction_index] == 'Option Exercise':
-                            continue  # Omitir esta fila
+                # Crear libros de trabajo de Excel para 'Buy' y 'Sale'
+                workbook_buy = openpyxl.Workbook()
+                worksheet_buy = workbook_buy.active
+                worksheet_buy.append(headers)
 
-                # Formatear las columnas numéricas
-                for i, col in enumerate(cols):
-                    if headers[i] in ['Cost']:
-                        cols[i] = float(col)
+                workbook_sale = openpyxl.Workbook()
+                worksheet_sale = workbook_sale.active
+                worksheet_sale.append(headers)
 
-                    if headers[i] in ['#Shares', 'Value ($)', '#Shares Total']:
-                        col = col.replace(',', '')
-                        cols[i] = float(col)
+                # Escribir los datos de las filas
+                for row in rows[1:]:
+                    cols = [col.text.strip() for col in row.find_all('td')]
 
-                # Escribir la fila en el archivo Excel correspondiente
-                if 'Transaction' in headers:
-                    transaction_index = headers.index('Transaction')
-                    if transaction_index < len(cols):
-                        if cols[transaction_index] == 'Buy':
-                            worksheet_buy.append(cols)
-                        elif cols[transaction_index] == 'Sale':
-                            worksheet_sale.append(cols)
+                    # Verificar si la columna 'Transaction' está presente
+                    if 'Transaction' in headers:
+                        transaction_index = headers.index('Transaction')
+                        # Verificar si el índice está dentro de los límites de la lista cols
+                        if transaction_index < len(cols):
+                            if cols[transaction_index] == 'Option Exercise':
+                                continue  # Omitir esta fila
 
-            # Guardar los libros de trabajo en archivos
-            workbook_buy.save('./salidas/latest-insiders-trading-Buy.xlsx')
-            workbook_sale.save('./salidas/latest-insiders-trading-Sale.xlsx')
-            print("Datos guardados en ./salidas/latest-insiders-trading-Buy.xlsx y ./salidas/latest-insiders-trading-Sale.xlsx")
+                    # Formatear las columnas numéricas
+                    for i, col in enumerate(cols):
+                        if headers[i] in ['Cost']:
+                            cols[i] = float(col)
+
+                        if headers[i] in ['#Shares', 'Value ($)', '#Shares Total']:
+                            col = col.replace(',', '')
+                            cols[i] = float(col)
+
+                    # Escribir la fila en el archivo Excel correspondiente
+                    if 'Transaction' in headers:
+                        transaction_index = headers.index('Transaction')
+                        if transaction_index < len(cols):
+                            if cols[transaction_index] == 'Buy':
+                                worksheet_buy.append(cols)
+                            elif cols[transaction_index] == 'Sale':
+                                worksheet_sale.append(cols)
+
+                # Guardar los libros de trabajo en archivos
+                workbook_buy.save('./salidas/latest-insiders-trading-Buy.xlsx')
+                workbook_sale.save('./salidas/latest-insiders-trading-Sale.xlsx')
+                print("Datos guardados en ./salidas/latest-insiders-trading-Buy.xlsx y ./salidas/latest-insiders-trading-Sale.xlsx")
+
+            else:
+                print("No hay nuevos datos. Omitiendo el tratamiento.")
+
         else:
             print("No se encontró la tabla en la página.")
 

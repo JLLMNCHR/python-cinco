@@ -17,7 +17,7 @@ def job():
     send_email(attachment_paths)
 
 #schedule.every().day.at("08:00").do(job)
-schedule.every(3).hours.do(job)
+schedule.every(1).hour.do(job)
 
 while True:
     schedule.run_pending()
