@@ -10,6 +10,7 @@
 <body>
     <h1>Datos del planificador <span id="id_planificador"></span></h1>
     <p>Última ejecución: <span id="ultima_ejecucion"></span></p>
+    <p>Última actualización: <span id="ultima_actualizacion"></span></p>
 
     <script>
         setInterval(async () => {
@@ -24,6 +25,9 @@
     
           const ultima_ejecucion = document.getElementById("ultima_ejecucion");
           ultima_ejecucion.textContent = `${data.ultima_ejecucion}`;
+
+          const ultima_actualizacion = document.getElementById("ultima_actualizacion");
+          ultima_actualizacion.textContent = `${data.ultima_actualizacion}`;
 
         }, 100000);
     </script>

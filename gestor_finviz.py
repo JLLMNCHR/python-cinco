@@ -1,7 +1,11 @@
+import os
 import requests
 from bs4 import BeautifulSoup
 import openpyxl
-import os
+
+def normalize_content(content):
+    # Eliminar espacios en blanco adicionales y saltos de línea
+    return ''.join(content.split())
 
 def get_latest_insiders_trading_info():
     print("Ejecutando gestor_finviz.get_latest_insiders_trading_info()")
@@ -21,25 +25,30 @@ def get_latest_insiders_trading_info():
 
         if table:
             # Crear directorios de salida si no existen
-            os.makedirs('./salidas', exist_ok=True)
+            os.makedirs('salidas', exist_ok=True)
+            os.makedirs('auxiliar', exist_ok=True)
 
             # Obtener las filas de la tabla
             rows = table.find_all('tr')            
+            contenido_actual = normalize_content(str(rows))
 
-            continuar_tratamiento = True
+            fich_aux = './auxiliar/latest-insiders-transaction-rows.html'
 
             try:
-                with open('latest-insiders-transaction-rows.html', 'r', encoding='utf-8') as f:
-                    contenido_previo = f.read()
+                with open(fich_aux, 'r', encoding='utf-8') as f:
+                    contenido_previo = normalize_content(f.read())
             except FileNotFoundError:
-                pass
+                # Si el archivo no existe, crear uno nuevo con el contenido actual
+                with open(fich_aux, 'w', encoding='utf-8') as f:
+                    f.write(str(rows))
+                continuar_tratamiento = True
             else:
-                contenido_actual = str(rows)
                 if contenido_previo == contenido_actual:
                     continuar_tratamiento = False
                 else:
-                    with open('latest-insiders-transaction-rows.html', 'w', encoding='utf-8') as f:
-                        f.write(contenido_actual)
+                    with open(fich_aux, 'w', encoding='utf-8') as f:
+                        f.write(str(rows))
+                    continuar_tratamiento = True
 
             if continuar_tratamiento:
                 # Continuar con el tratamiento de los datos
@@ -97,7 +106,6 @@ def get_latest_insiders_trading_info():
 
         else:
             print("No se encontró la tabla en la página.")
-
 
 def main():
     get_latest_insiders_trading_info()

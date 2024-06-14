@@ -20,12 +20,17 @@ def api_planificador(id_planificador):
 
     do_job()
 
+    estado_compartido.actualizar_ultima_ejecucion()
     ultima_ejecucion = estado_compartido.obtener_ultima_ejecucion()
     print(f"(api_planificador) Última ejecución: {ultima_ejecucion}")
 
+    ultima_actualizacion = estado_compartido.obtener_ultima_actualizacion()
+    print(f"(api_planificador) Última actualización: {ultima_actualizacion}")
+
     return {
         "id_planificador": id_planificador,
-        "ultima_ejecucion": ultima_ejecucion
+        "ultima_ejecucion": ultima_ejecucion,
+        "ultima_actualizacion": ultima_actualizacion
     }
 
 # /view/planificador/latest_insiders_trading
