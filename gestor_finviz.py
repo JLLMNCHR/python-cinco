@@ -3,9 +3,8 @@ from bs4 import BeautifulSoup
 import openpyxl
 import os
 
-
-def get_info():
-    print("Ejecutando latest_insiders_trading.get_info()")
+def get_latest_insiders_trading_info():
+    print("Ejecutando gestor_finviz.get_latest_insiders_trading_info()")
 
     url = "https://finviz.com/insidertrading.ashx"
     headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'}
@@ -101,7 +100,7 @@ def get_info():
 
 
 def main():
-    get_info()
+    get_latest_insiders_trading_info()
 
 if __name__ == '__main__':
     main()

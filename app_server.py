@@ -1,26 +1,34 @@
 from flask import Flask, render_template
 from random import uniform
+from estado_compartido import estado_compartido
+from gestor_job import do_job
 
 app = Flask(__name__)
 
 @app.route("/")
 def home():
+    print("Ejecutando app_server.home()")    
     return "<h1>Estación de Monitoreo de Datos</h1>"
 
-# /api/sensor/temperatura
-# /api/sensor/humedad
-# /api/sensor/123
-# /api/sensor/...
-@app.route("/api/sensor/<id>")
-def sensor(id):
-    celsius = uniform(0, 90)
+# /api/planificador/latest_insiders_trading
+@app.route("/api/planificador/<id_planificador>")
+def api_planificador(id_planificador):
+    print("Ejecutando app_server.api_planificador()")    
+
+    do_job()
+
+    ultima_ejecucion = estado_compartido.obtener_ultima_ejecucion()
+    print(f"(api_planificador) Última ejecución: {ultima_ejecucion}")
+
     return {
-        "celsius": celsius,
-        "id": id
+        "id_planificador": id_planificador,
+        "ultima_ejecucion": ultima_ejecucion
     }
 
-@app.route("/view/sensor/<id>")
-def sensor_view(id):
-    return render_template("sensor.html")
+# /view/planificador/latest_insiders_trading
+@app.route("/view/planificador/<id_planificador>")
+def view_planificador(id_planificador):
+    print("Ejecutando app_server.view_planificador()")   
+    return render_template("index.html")
 
 app.run()
