@@ -11,6 +11,7 @@
     <h1>Datos del planificador <span id="id_planificador"></span></h1>
     <p>Última ejecución: <span id="ultima_ejecucion"></span></p>
     <p>Última actualización: <span id="ultima_actualizacion"></span></p>
+    <p>Ejecución cada: 120000 ms</p>
 
     <script>
         setInterval(async () => {
@@ -29,8 +30,8 @@
           const ultima_actualizacion = document.getElementById("ultima_actualizacion");
           ultima_actualizacion.textContent = `${data.ultima_actualizacion}`;
 
-        }, 3600000);
-        <!-- Ejecutar cada 1 hora -->
+        }, 120000);
+        <!-- Ejecutar cada 1 hora: 3600000 -->
     </script>
 
 </body>
