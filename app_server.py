@@ -39,4 +39,5 @@ def view_planificador(id_planificador):
     print("Ejecutando app_server.view_planificador()")   
     return render_template("index.html")
 
-app.run()
+if __name__ == '__main__':
+    app.run()
