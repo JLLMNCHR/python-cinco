@@ -44,6 +44,7 @@ def send_email(attachment_paths):
 
 def main():
     salidas_dir = './salidas'
+    os.makedirs(salidas_dir, exist_ok=True)
     attachment_paths = [os.path.join(salidas_dir, filename) for filename in os.listdir(salidas_dir)]
 
     send_email(attachment_paths)
